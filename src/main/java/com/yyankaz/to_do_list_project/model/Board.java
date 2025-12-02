@@ -5,15 +5,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Table {
+public class Board {
     @Id
     private Long id;
-    private String tableName;
+    private String boardName;
     @ManyToOne
     private User user;
     @OneToMany
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 }

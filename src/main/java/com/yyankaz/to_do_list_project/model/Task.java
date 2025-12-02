@@ -11,5 +11,5 @@ public class Task {
     private Boolean finished;
     private String taskDescription;
     @ManyToOne
-    private Table table;
+    private Board board;
 }
