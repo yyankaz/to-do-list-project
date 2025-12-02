@@ -10,5 +10,5 @@ import org.mapstruct.MappingTarget;
 public interface TaskMapper {
     Task toEntity(TaskCreatedDto dto);
     TaskDto toDto(Task task);
-    //void updateEntity(@MappingTarget User user, UserUpdateDto dto);
+    void updateEntity(@MappingTarget Task task, TaskUpdateDto dto);
 }
