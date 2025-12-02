@@ -5,7 +5,7 @@ import com.yyankaz.to_do_list_project.dto.UserDto;
 import com.yyankaz.to_do_list_project.dto.UserUpdateDto;
 
 public interface UserService {
-    UserDto findDyId(Long id);
+    UserDto findById(Long id);
     UserDto createUser(UserCreateDto createdDto);
     UserDto updateUser(UserUpdateDto updatedDto, Long id);
     void deleteUserById(Long id);
