@@ -7,11 +7,13 @@ import com.yyankaz.to_do_list_project.mapper.UserMapper;
 import com.yyankaz.to_do_list_project.model.User;
 import com.yyankaz.to_do_list_project.repository.UserRepository;
 import com.yyankaz.to_do_list_project.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;

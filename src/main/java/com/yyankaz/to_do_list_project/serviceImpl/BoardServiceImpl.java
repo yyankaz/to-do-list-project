@@ -7,11 +7,13 @@ import com.yyankaz.to_do_list_project.mapper.BoardMapper;
 import com.yyankaz.to_do_list_project.model.Board;
 import com.yyankaz.to_do_list_project.repository.BoardRepository;
 import com.yyankaz.to_do_list_project.service.BoardService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class BoardServiceImpl implements BoardService {
 
     private BoardRepository boardRepository;

@@ -7,11 +7,13 @@ import com.yyankaz.to_do_list_project.mapper.TaskMapper;
 import com.yyankaz.to_do_list_project.model.Task;
 import com.yyankaz.to_do_list_project.repository.TaskRepository;
 import com.yyankaz.to_do_list_project.service.TaskService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepository taskRepository;
