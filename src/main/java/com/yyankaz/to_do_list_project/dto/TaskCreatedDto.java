@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TaskCreatedDto {
     private String taskDescription;
-    private Board board;
+    private Long boardId;
 }

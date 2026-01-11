@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public UserDto findById(@PathVariable Long id) {
-        return userService.findById(id);
+    @GetMapping
+    public UserDto findUser() {
+        return userService.findUser();
     }
 
     @PostMapping
@@ -27,13 +27,13 @@ public class UserController {
         return userService.createUser(createdDto);
     }
 
-    @PutMapping("/{id}")
-    public UserDto updateUser(@Valid @RequestBody UserUpdateDto updatedDto, @PathVariable Long id) {
-        return userService.updateUser(updatedDto, id);
+    @PutMapping
+    public UserDto updateUser(@Valid @RequestBody UserUpdateDto updatedDto) {
+        return userService.updateUser(updatedDto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable Long id) {
-        userService.deleteUserById(id);
+    @DeleteMapping
+    public void deleteUser() {
+        userService.deleteUser();
     }
 }

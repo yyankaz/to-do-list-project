@@ -8,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TaskUpdateDto {
     private String taskDescription;
-    private Board board;
+    //private Long boardId;
 }
