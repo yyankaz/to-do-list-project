@@ -3,6 +3,7 @@ package com.yyankaz.to_do_list_project.serviceImpl;
 import com.yyankaz.to_do_list_project.dto.TaskCreatedDto;
 import com.yyankaz.to_do_list_project.dto.TaskDto;
 import com.yyankaz.to_do_list_project.dto.TaskUpdateDto;
+import com.yyankaz.to_do_list_project.exception.NotFoundException;
 import com.yyankaz.to_do_list_project.mapper.TaskMapper;
 import com.yyankaz.to_do_list_project.model.Board;
 import com.yyankaz.to_do_list_project.model.Task;
@@ -34,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto updateTask(TaskUpdateDto updatedDto, Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
         boardService.findByIdAndUser(task.getBoard().getId());
         taskMapper.updateEntity(task, updatedDto);
         Task saved = taskRepository.save(task);
@@ -44,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto findTaskById(Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
         boardService.findByIdAndUser(task.getBoard().getId());
         return taskMapper.toDto(task);
     }
@@ -52,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTaskById(Long id) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new NotFoundException("Task not found"));
         boardService.findByIdAndUser(task.getBoard().getId());
         taskRepository.delete(task);
     }

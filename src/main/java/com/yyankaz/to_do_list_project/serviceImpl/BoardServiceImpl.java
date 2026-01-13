@@ -3,6 +3,7 @@ package com.yyankaz.to_do_list_project.serviceImpl;
 import com.yyankaz.to_do_list_project.dto.BoardCreatedDto;
 import com.yyankaz.to_do_list_project.dto.BoardDto;
 import com.yyankaz.to_do_list_project.dto.BoardUpdateDto;
+import com.yyankaz.to_do_list_project.exception.NotFoundException;
 import com.yyankaz.to_do_list_project.mapper.BoardMapper;
 import com.yyankaz.to_do_list_project.model.Board;
 import com.yyankaz.to_do_list_project.model.User;
@@ -26,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
     public Board findByIdAndUser(Long id){
         User currentUser = userService.getCurrentUser();
         return boardRepository.findByIdAndUser(id, currentUser)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
+                .orElseThrow(() -> new NotFoundException("Board not found"));
     }
 
     @Override

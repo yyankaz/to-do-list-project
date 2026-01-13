@@ -3,6 +3,7 @@ package com.yyankaz.to_do_list_project.serviceImpl;
 import com.yyankaz.to_do_list_project.dto.UserCreateDto;
 import com.yyankaz.to_do_list_project.dto.UserDto;
 import com.yyankaz.to_do_list_project.dto.UserUpdateDto;
+import com.yyankaz.to_do_list_project.exception.NotFoundException;
 import com.yyankaz.to_do_list_project.mapper.UserMapper;
 import com.yyankaz.to_do_list_project.model.User;
 import com.yyankaz.to_do_list_project.repository.UserRepository;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
                 .getName();
 
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
