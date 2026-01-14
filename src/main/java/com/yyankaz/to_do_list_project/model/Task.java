@@ -1,17 +1,17 @@
 package com.yyankaz.to_do_list_project.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
 @Data
 public class Task {
     @Id
+    @GeneratedValue
     private Long id;
     private Boolean finished;
+    @NotBlank(message = "Task can't be empty.")
     private String taskDescription;
     @ManyToOne
     @JoinColumn(name = "board_id")
