@@ -11,7 +11,6 @@ public class Task {
     @GeneratedValue
     private Long id;
     private Boolean finished;
-    @NotBlank(message = "Task can't be empty.")
     private String taskDescription;
     @ManyToOne
     @JoinColumn(name = "board_id")

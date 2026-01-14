@@ -13,7 +13,6 @@ public class Board {
     @Id
     @GeneratedValue
     private Long id;
-    @NotBlank(message = "Board name can't be empty.")
     private String boardName;
     @ManyToOne
     @JoinColumn(name = "user_id")
