@@ -3,6 +3,7 @@ package com.yyankaz.to_do_list_project.exception.handler;
 import com.yyankaz.to_do_list_project.exception.ErrorResponse;
 import com.yyankaz.to_do_list_project.exception.NotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

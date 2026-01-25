@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserCreateDto createdDto) {
-        if(userRepository.existByUsername(createdDto.getUsername())){
+        if(userRepository.existsByUsername(createdDto.getUsername())){
             throw new RuntimeException("Username already exist.");
         }
         User user = userMapper.toEntity(createdDto);
