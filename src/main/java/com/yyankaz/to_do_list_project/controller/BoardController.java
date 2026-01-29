@@ -17,7 +17,7 @@ import java.util.List;
 public class BoardController {
     private final BoardService boardService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<BoardDto> findAllByUser(){
         return boardService.findAllByUser();
     }
