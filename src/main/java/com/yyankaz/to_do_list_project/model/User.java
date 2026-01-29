@@ -7,8 +7,9 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Data
+@Entity
+@Table(name = "app_user")
 public class User {
     @Id
     @GeneratedValue

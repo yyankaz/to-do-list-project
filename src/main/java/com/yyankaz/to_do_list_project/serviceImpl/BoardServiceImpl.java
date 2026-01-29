@@ -14,6 +14,11 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -28,6 +33,16 @@ public class BoardServiceImpl implements BoardService {
         User currentUser = userService.getCurrentUser();
         return boardRepository.findByIdAndUser(id, currentUser)
                 .orElseThrow(() -> new NotFoundException("Board not found"));
+    }
+
+    @Override
+    public List<BoardDto> findAllByUser() {
+
+        List<Board> boards = boardRepository.findAllByUser(userService.getCurrentUser());
+        return boards
+                .stream()
+                .map(boardMapper::toDto)
+                .toList();
     }
 
     @Override

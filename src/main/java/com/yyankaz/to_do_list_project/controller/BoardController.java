@@ -9,13 +9,20 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
 
-    @PostMapping
+    @GetMapping
+    public List<BoardDto> findAllByUser(){
+        return boardService.findAllByUser();
+    }
+
+    @PostMapping("/create")
     public BoardDto createBoard(@Valid @RequestBody BoardCreatedDto createdDto) {
         return boardService.createBoard(createdDto);
     }
