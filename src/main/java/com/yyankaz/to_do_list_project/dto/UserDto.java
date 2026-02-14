@@ -14,5 +14,5 @@ public class UserDto {
     private Long id;
     @NotBlank(message = "Username can't be empty.")
     private String username;
-    private List<Board> boards = new ArrayList<>();
+    private List<Long> boardIds = new ArrayList<>();
 }

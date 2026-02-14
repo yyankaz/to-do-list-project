@@ -30,17 +30,21 @@ public class UserController {
         UserDto savedUser = userService.createUser(createdDto);
 
         authService.autoLogin(savedUser.getUsername(), createdDto.getPassword());
+        log.info("REGISTER FINISHED: {}", createdDto.getUsername());
 
         return savedUser;
     }
 
     @PutMapping
     public UserDto updateUser(@Valid @RequestBody UserUpdateDto updatedDto) {
+        log.info("USER UPDATED: {}", updatedDto.getUsername());
         return userService.updateUser(updatedDto);
     }
 
     @DeleteMapping
     public void deleteUser() {
+        Long id = userService.getCurrentUser().getId();
         userService.deleteUser();
+        log.info("USER DELETED: {}", id);
     }
 }

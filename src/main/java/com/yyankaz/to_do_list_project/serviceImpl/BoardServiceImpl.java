@@ -12,6 +12,7 @@ import com.yyankaz.to_do_list_project.service.BoardService;
 import com.yyankaz.to_do_list_project.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 @Transactional
@@ -47,19 +49,27 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDto createBoard(BoardCreatedDto createdDto) {
+        log.info("BOARD CREATION CALLED: boardName = {}", createdDto.getBoardName());
         User currentUser = userService.getCurrentUser();
         Board board = boardMapper.toEntity(createdDto);
         board.setUser(currentUser);
         Board saved = boardRepository.save(board);
+        log.info("BOARD SUCCESSFULLY CREATED: boardId = {}, boardName = {}", saved.getId(), saved.getBoardName());
         return boardMapper.toDto(saved);
     }
 
     @Override
     public BoardDto updateBoard(BoardUpdateDto updatedDto, Long id) {
+        log.info("BOARD UPDATING CALLED: boardId = {}", id);
         Board board = findByIdAndUser(id);
-        boardMapper.updateEntity(board, updatedDto);
+
+        board.setBoardName(updatedDto.getBoardName());
+        board.setColor(updatedDto.getColor());
+
         Board saved = boardRepository.save(board);
+        log.info("BOARD SUCCESSFULLY UPDATED: boardId = {}, boardName = {}", saved.getId(), saved.getBoardName());
         return boardMapper.toDto(saved);
+
     }
 
     @Override
@@ -68,9 +78,11 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.toDto(board);
     }
 
+
     @Override
     public void deleteBoardById(Long id) {
+        log.info("BOARD DELETING CALLED: boardId = {}", id);
         Board board = findByIdAndUser(id);
-        boardRepository.delete(board);
+        board.getUser().getBoards().remove(board);
     }
 }

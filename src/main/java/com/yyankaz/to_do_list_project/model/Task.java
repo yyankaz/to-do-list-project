@@ -10,7 +10,8 @@ public class Task {
     @Id
     @GeneratedValue
     private Long id;
-    private Boolean finished;
+    @Column(nullable = false)
+    private Boolean finished = false;
     private String taskDescription;
     @ManyToOne
     @JoinColumn(name = "board_id")

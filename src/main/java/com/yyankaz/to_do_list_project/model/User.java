@@ -1,5 +1,6 @@
 package com.yyankaz.to_do_list_project.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class User {
     private String username;
     @Getter
     private String password;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Board> boards = new ArrayList<>();
 }

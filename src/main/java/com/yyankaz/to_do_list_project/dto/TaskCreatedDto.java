@@ -5,11 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 public class TaskCreatedDto {
     @NotBlank(message = "Task can't be empty.")
     private String taskDescription;
+    @NonNull
     private Long boardId;
+    @NonNull
+    private Boolean finished = false;
 }
