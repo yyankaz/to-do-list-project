@@ -10,6 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserUpdateDto {
     @NotBlank(message = "Username can't be empty.")
+    @Size(min = 5, max = 32)
     private String username;
     @NotBlank(message = "Password can't be empty.")
     @Pattern(

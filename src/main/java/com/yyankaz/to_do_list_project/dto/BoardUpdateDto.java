@@ -3,6 +3,7 @@ package com.yyankaz.to_do_list_project.dto;
 
 import com.yyankaz.to_do_list_project.model.enums.BoardColor;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
@@ -11,6 +12,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class BoardUpdateDto {
     @NotBlank(message = "Board name can't be empty.")
+    @Size(min = 1, max = 50)
     private String boardName;
     @NonNull
     private BoardColor color;

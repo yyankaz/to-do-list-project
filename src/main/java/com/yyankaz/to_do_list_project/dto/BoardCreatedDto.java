@@ -11,7 +11,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class BoardCreatedDto {
     @NotBlank(message = "Board name can't be empty.")
-    //@Size(min = 1, max = )
+    @Size(min = 1, max = 50)
     private String boardName;
     @NonNull
     private BoardColor color;

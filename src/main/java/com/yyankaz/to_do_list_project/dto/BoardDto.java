@@ -4,6 +4,7 @@ import com.yyankaz.to_do_list_project.model.Task;
 import com.yyankaz.to_do_list_project.model.User;
 import com.yyankaz.to_do_list_project.model.enums.BoardColor;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
