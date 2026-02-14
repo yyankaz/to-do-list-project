@@ -35,7 +35,7 @@ public class SecurityBeanConfig {
         http    .cors(Customizer.withDefaults())
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+                    corsConfig.setAllowedOrigins(List.of("https://monstry-to-do-list-frontend.netlify.app"));
                     corsConfig.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.setAllowedHeaders(List.of("*"));
@@ -79,7 +79,7 @@ public class SecurityBeanConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("https://monstry-to-do-list-frontend.netlify.app")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
