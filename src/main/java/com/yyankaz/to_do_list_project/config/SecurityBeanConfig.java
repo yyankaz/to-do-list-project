@@ -1,5 +1,6 @@
 package com.yyankaz.to_do_list_project.config;
 
+import com.yyankaz.to_do_list_project.security.JwtAuthFilter;
 import com.yyankaz.to_do_list_project.serviceImpl.CustomUserDetailService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -10,9 +11,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,6 +30,7 @@ import java.util.List;
 public class SecurityBeanConfig {
 
     private final CustomUserDetailService userDetailsService;
+    private final JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -63,30 +67,17 @@ public class SecurityBeanConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sm ->
+                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login","/user/register").permitAll()
+                        .requestMatchers("/auth/**", "/user/register").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginProcessingUrl("/login")
-                        .successHandler((request, response, authentication) -> {
-                            request.getSession(true);
-                            response.setStatus(HttpServletResponse.SC_OK); // 200
-                        })
-                        .failureHandler((request, response, exception) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED); // 401
-                        })
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                )
-                .userDetailsService(userDetailsService);
+                .addFilterBefore(jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
