@@ -72,6 +72,7 @@ public class SecurityBeanConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
+                            request.getSession(true);
                             response.setStatus(HttpServletResponse.SC_OK); // 200
                         })
                         .failureHandler((request, response, exception) -> {
