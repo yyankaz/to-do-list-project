@@ -63,18 +63,7 @@ public class SecurityBeanConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(request -> {
-                    var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.setAllowedOrigins(
-                            List.of("https://monstry-to-do-list-frontend.netlify.app")
-                    );
-                    config.setAllowedMethods(
-                            List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS")
-                    );
-                    config.setAllowedHeaders(List.of("*"));
-                    config.setAllowCredentials(true);
-                    return config;
-                }))
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login","/user/register").permitAll()
@@ -83,40 +72,38 @@ public class SecurityBeanConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
-                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.setStatus(HttpServletResponse.SC_OK); // 200
                         })
                         .failureHandler((request, response, exception) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED); // 401
                         })
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(HttpServletResponse.SC_OK);
-                        })
-                        .invalidateHttpSession(true)
+                        .logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
                         .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
                 )
                 .userDetailsService(userDetailsService);
 
         return http.build();
     }
 
-    //@Bean
-    //@CrossOrigin
-    //public WebMvcConfigurer corsConfigurer() {
-    //    return new WebMvcConfigurer() {
-    //        @Override
-    //        public void addCorsMappings(CorsRegistry registry) {
-    //            registry.addMapping("/**")
-    //                    .allowedOrigins("https://monstry-to-do-list-frontend.netlify.app")
-    //                    .allowedMethods("*")
-    //                    .allowedHeaders("*")
-    //                    .allowCredentials(true);
-    //        }
-    //    };
-    //}
+    @Bean
+    @CrossOrigin
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("https://monstry-to-do-list-frontend.netlify.app")
+                        .allowedMethods("GET","POST","PUT","DELETE","PATCH","OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(
