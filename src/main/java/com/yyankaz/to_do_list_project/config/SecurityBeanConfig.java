@@ -88,6 +88,7 @@ public class SecurityBeanConfig {
                         .failureHandler((request, response, exception) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                         })
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
