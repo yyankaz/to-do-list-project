@@ -31,15 +31,19 @@ public class SecurityBeanConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http    .cors(Customizer.withDefaults())
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .cors(cors -> cors.configurationSource(request -> {
-                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("https://monstry-to-do-list-frontend.netlify.app"));
-                    corsConfig.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
-                    corsConfig.setAllowCredentials(true);
-                    corsConfig.setAllowedHeaders(List.of("*"));
-                    return corsConfig;
+                    var config = new org.springframework.web.cors.CorsConfiguration();
+                    config.setAllowedOrigins(
+                            List.of("https://monstry-to-do-list-frontend.netlify.app")
+                    );
+                    config.setAllowedMethods(
+                            List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS")
+                    );
+                    config.setAllowedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -47,17 +51,12 @@ public class SecurityBeanConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginProcessingUrl("/login").permitAll()
+                        .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
                             response.setStatus(HttpServletResponse.SC_OK);
                         })
                         .failureHandler((request, response, exception) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication Failed");
-                        })
-                )
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((req, res, e) -> {
-                            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                         })
                 )
                 .logout(logout -> logout
@@ -69,23 +68,24 @@ public class SecurityBeanConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .userDetailsService(userDetailsService);
+
         return http.build();
     }
 
-    @Bean
-    @CrossOrigin
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("https://monstry-to-do-list-frontend.netlify.app")
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
+    //@Bean
+    //@CrossOrigin
+    //public WebMvcConfigurer corsConfigurer() {
+    //    return new WebMvcConfigurer() {
+    //        @Override
+    //        public void addCorsMappings(CorsRegistry registry) {
+    //            registry.addMapping("/**")
+    //                    .allowedOrigins("https://monstry-to-do-list-frontend.netlify.app")
+    //                    .allowedMethods("*")
+    //                    .allowedHeaders("*")
+    //                    .allowCredentials(true);
+    //        }
+    //    };
+    //}
 
     @Bean
     public AuthenticationManager authenticationManager(
