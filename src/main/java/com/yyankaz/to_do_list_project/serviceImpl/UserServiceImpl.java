@@ -3,7 +3,9 @@ package com.yyankaz.to_do_list_project.serviceImpl;
 import com.yyankaz.to_do_list_project.dto.UserCreateDto;
 import com.yyankaz.to_do_list_project.dto.UserDto;
 import com.yyankaz.to_do_list_project.dto.UserUpdateDto;
+import com.yyankaz.to_do_list_project.exception.ConstraintViolationException;
 import com.yyankaz.to_do_list_project.exception.NotFoundException;
+import com.yyankaz.to_do_list_project.exception.UsernameAlreadyExistException;
 import com.yyankaz.to_do_list_project.mapper.UserMapper;
 import com.yyankaz.to_do_list_project.model.User;
 import com.yyankaz.to_do_list_project.repository.UserRepository;
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserCreateDto createdDto) {
         log.info("USER CREATION CALLED: username = {}", createdDto.getUsername());
         if(userRepository.existsByUsername(createdDto.getUsername())){
-            throw new RuntimeException("Username already exist.");
+            throw new UsernameAlreadyExistException("Username already exist.");
         }
         User user = userMapper.toEntity(createdDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

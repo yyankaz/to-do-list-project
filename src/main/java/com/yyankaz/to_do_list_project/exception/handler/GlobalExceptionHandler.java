@@ -2,6 +2,7 @@ package com.yyankaz.to_do_list_project.exception.handler;
 
 import com.yyankaz.to_do_list_project.exception.ErrorResponse;
 import com.yyankaz.to_do_list_project.exception.NotFoundException;
+import com.yyankaz.to_do_list_project.exception.UsernameAlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.management.InstanceAlreadyExistsException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,5 +45,14 @@ public class GlobalExceptionHandler {
                         errors.put(violation.getPropertyPath().toString(), violation.getMessage())
                 );
         return errors;
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleUsernameAlreadyExist(InstanceAlreadyExistsException ex){
+        return new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage()
+        );
     }
 }
